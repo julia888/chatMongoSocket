@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"/>
+    <!--<link rel="stylesheet" href="../../public/css/app.css"/>-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<section class="container">
+    <nav class="navbar navbar-default" role="navigation">
+        <ul class="nav navbar-nav">
+            <li><a href="/">Главная</a></li>
+            <% if(user){ %>
+                <li><a href="/chat">Чат</a></li>
+            <% } %>
+        </ul>
+        <p>Wellcome</p>
+        <ul class="nav navbar-nav navbar-right">
+            <% if (user){ %>
+                <a href="" onclick="$(document.body).append($('<form method=POST action=/logout>'));$('form').submit();return false">Выйти</a>
+            <% } else { %>
+                    <li><a href="/login">Войти</a></li>
+                    <li><a href="/registration">зарегистрироваться</a></li>
+                <% } %>
+        </ul>
+    </nav>
+</section>
+
+</body>
+</html>
