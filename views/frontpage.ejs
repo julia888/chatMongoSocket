@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"/>
     <!--<link rel="stylesheet" href="../../public/css/app.css"/>-->
-
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
@@ -13,21 +13,33 @@
     <nav class="navbar navbar-default" role="navigation">
         <ul class="nav navbar-nav">
             <li><a href="/">Главная</a></li>
-            <% if(user){ %>
-                <li><a href="/chat">Чат</a></li>
-            <% } %>
         </ul>
-        <p>Wellcome</p>
+        <% if(user){ %>
+            <ul class="nav navbar-nav">
+                <li><a href="/chat">Чат</a></li>
+            </ul>
+        <% } %>
+        <!--<p>Wellcome</p>-->
+        <% if (!user){ %>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/login">Войти</a></li>
+            </ul>
+        <% } %>
         <ul class="nav navbar-nav navbar-right">
             <% if (user){ %>
-                <a href="" onclick="$(document.body).append($('<form method=POST action=/logout>'));$('form').submit();return false">Выйти</a>
+            <li>
+                <a href=""
+                   onclick="$(document.body).append($('<form method=POST action=/logout>'));$('form').submit();return false">Выйти</a>
+            </li>
+
             <% } else { %>
-                    <li><a href="/login">Войти</a></li>
-                    <li><a href="/registration">Зарегистрироваться</a></li>
-                <% } %>
+                <li><a href="/registration">Зарегистрироваться</a></li>
+            <% } %>
         </ul>
     </nav>
 </section>
-
+<div class="gif container">
+    <img src="https://i.imgur.com/hLjdt83.gif" alt="wait">
+</div>
 </body>
 </html>
