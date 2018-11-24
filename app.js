@@ -1,16 +1,16 @@
-var express = require('express') ;
-// const errorHandler  = require('express-error-handler') ;
+const express = require('express') ;
 const http = require('http') ;
 const path = require('path') ;
 const config = require('config') ;
 const HttpError = require("error").HttpError;
-var bodyParser  = require('body-parser');
-var cookieParser  = require('cookie-parser');
-var session = require('express-session');
-var mongoose = require("libs/mongoose");
-var logger = require('morgan');
-var createError = require('http-errors');
-var checkAuth = require('middleware/checkAuth');
+const bodyParser  = require('body-parser');
+const cookieParser  = require('cookie-parser');
+const session = require('express-session');
+const mongoose = require("libs/mongoose");
+const logger = require('morgan');
+const createError = require('http-errors');
+const checkAuth = require('middleware/checkAuth');
+const fs = require('fs');
 
 const app = express();
 
@@ -18,7 +18,9 @@ app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs');
 
 app.set('port', config.get('port'));
-app.use(logger('dev'));
+let accessLogStream = fs.createWriteStream(__dirname + '/access.log',{flags: 'a'});
+// app.use(logger('dev'));
+app.use(logger('combined', {stream: accessLogStream}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -26,7 +28,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // var MongoStore = require('connect-mongo')(session);
-var sessionStore = require('libs/sessionStorage');
+const sessionStore = require('libs/sessionStorage');
 app.use(session({
     secret: config.get("session:secret"),
     key: config.get("session:key"),
@@ -38,11 +40,11 @@ app.use(session({
 app.use(require("middleware/sendHttpError"));
 app.use(require("middleware/loadUser"));
 
-var frontpageRouter = require('./routes/frontpage');
-var loginRouter = require('./routes/login');
-var chatRouter = require('./routes/chat');
-var logoutRouter = require('./routes/logout');
-var regRouter = require('./routes/registration');
+const frontpageRouter = require('./routes/frontpage');
+const loginRouter = require('./routes/login');
+const chatRouter = require('./routes/chat');
+const logoutRouter = require('./routes/logout');
+const regRouter = require('./routes/registration');
 
 
 app.get('/', frontpageRouter.get);
@@ -72,7 +74,7 @@ app.use(function(req, res, next) {
     next(createError(404));
 });
 
-var server = http.createServer(app);
+const server = http.createServer(app);
 server.listen(app.get('port'), () => console.log(`Example app listening on port ` + config.get('port')));
 
 require('./socket')(server);

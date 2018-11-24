@@ -1,5 +1,5 @@
-var mongoose = require('libs/mongoose');
-var async = require('async');
+const mongoose = require('libs/mongoose');
+const async = require('async');
 mongoose.set('debug', true);
 
 async.series([
@@ -17,7 +17,7 @@ function open(callback){
     mongoose.connection.on('open', callback);
 }
 function dropDatabase(callback){
-    var db = mongoose.connection.db;
+    let db = mongoose.connection.db;
     db.dropDatabase(callback);
 }
 function requireModels(callback) {
@@ -28,17 +28,15 @@ function requireModels(callback) {
     }, callback);
 }
 function createUsers(callback){
-    var users = [
+    let users = [
         {username: "User", password: "secret"},
         {username: "Petya", password: "123"},
         {username: "admin", password: "admin"}
     ];
     async.each(users, function (userData, callback) {
-        var user = new mongoose.models.User(userData);
+        let user = new mongoose.models.User(userData);
         user.save(callback);
     }, callback);
-
-
 }
 
 

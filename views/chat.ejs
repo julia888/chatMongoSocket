@@ -34,28 +34,27 @@
 </div>
 <script>
     function setLS(){
-        let user =document.getElementById('name').innerText;
+        const user =document.getElementById('name').innerText;
         localStorage.setItem('logo', user);
-        var ls =localStorage.getItem('logo');
-        return ls;
+        return localStorage.getItem('logo');
     }
     setLS();
 </script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    var ls =setLS();
-    var socket = io.connect();
+    const ls = setLS();
+    const socket = io.connect('', {
+        'reconnection delay': 1
+    });
 
-    var form = $('#room form');
-    var ul = $('#room ul');
+    const form = $('#room form');
+    const ul = $('#room ul');
+    const input = $('#room input');
 
     form.submit(function () {
-
-        var input = $(this).find(':input');
-        var text = input.val();
-
-        var allText = ls +" > " + text;
-
+        // const input = $(this).find(':input');
+        let text = input.val();
+        let allText = ls +" > " + text;
         socket.emit('message', allText, function (data) {
             $('<li>', {text: allText}).appendTo(ul);
         });
@@ -63,9 +62,27 @@
         return false;
     });
 
-    socket.on('message', function (text) {
-        $('<li>', {text: text}).appendTo(ul);
-    });
+    socket
+        .on('message', function (text) {
+            $('<li>', {text: text}).appendTo(ul);
+        })
+        .on('join', function (ls) {
+            printStatus(ls + ' вошел/вошла в чат');
+        })
+        .on('leave', function (ls) {
+            printStatus(ls + ' вышел/вышла из чата');
+        })
+        .on('connect', function () {
+            printStatus('соединение установлено');
+        })
+        .on('disconnect', function () {
+            printStatus('соединение потеряно');
+        })
+
+    function printStatus(status){
+        $('<li>').append($('<i>').text(status)).appendTo(ul);
+    }
+    socket.emit('userConnect', ls);
 
 </script>
 

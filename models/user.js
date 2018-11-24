@@ -64,7 +64,7 @@ schema.statics.authorize = function (username, password, callback) {
         }
     ], callback);
 };
-schema.statics.registration = function (username, password, callback) {
+schema.statics.registrationUser = function (username, password, callback) {
     var User = this;
 
     async.waterfall([
@@ -72,11 +72,16 @@ schema.statics.registration = function (username, password, callback) {
             User.findOne({username: username}, callback);
         },
         function (user, callback) {
-            var user = new User({username: username, password: password});
-            user.save(function (err) {
-                if (err) return callback(err);
-                callback(null, user);
-            });
+            if (user) {
+                callback(new AuthError("wrong password"));
+            }else{
+                var user = new User({username: username, password: password});
+                user.save(function (err) {
+                    if (err) return callback(err);
+                    callback(null, user);
+                });
+            }
+
         }
     ], callback);
 };

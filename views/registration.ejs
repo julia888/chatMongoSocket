@@ -30,27 +30,27 @@
         <label for="input-username" class="col-lg-2 control-label">Имя</label>
 
         <div class="col-lg-10">
-            <input name="username" value="name" type="text" class="form-control" id="input-username" placeholder="Имя" required>
+            <input name="username" type="text" class="form-control" id="input-username" placeholder="Имя" required>
         </div>
     </div>
     <div class="form-group">
         <label for="input-password" class="col-lg-2 control-label">Пароль</label>
 
         <div class="col-lg-10">
-            <input name="password" value="pass" type="password" class="form-control" id="input-password" placeholder="Пароль" required>
+            <input name="password" type="password" class="form-control" id="input-password" placeholder="Пароль" required>
         </div>
     </div>
     <div class="form-group">
         <div class="col-lg-offset-2 col-lg-10">
             <button type="submit" class="btn btn-primary" data-loading-text="Отправляю...">Войти</button>
-            <span class="help-block error"></span>
+            <span class="help-block error" style="color: red;"></span>
         </div>
     </div>
 </form>
 
 <script>
     $(document.forms['login-form']).on('submit', function() {
-        var form = $(this);
+        const form = $(this);
 
         $('.error', form).html('');
         $(":submit", form).button("loading");
@@ -64,12 +64,10 @@
             },
             statusCode: {
                 200: function() {
-                    form.html("Вы зарегистрировались").addClass('alert-success');
                     window.location.href = "/login";
                 },
-                403: function(jqXHR) {
-                    var error = JSON.parse(jqXHR.responseText);
-                    $('.error', form).html(error.message);
+                403: function() {
+                    $('.error', form).html('Username exists');
                 }
             }
         });

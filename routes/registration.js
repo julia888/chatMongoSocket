@@ -1,16 +1,16 @@
-var User = require("models/user").User;
-var AuthError = require("models/user").AuthError;
-var HttpError = require("error").HttpError;
-var async = require('async');
+const User = require("models/user").User;
+const AuthError = require("models/user").AuthError;
+const HttpError = require("error").HttpError;
+const async = require('async');
 
 exports.get = function (req, res) {
     res.render('registration');
 };
 exports.post = function (req, res, next) {
-    var username = req.body.username;
-    var password = req.body.password;
+    const username = req.body.username;
+    const password = req.body.password;
 
-    User.registration(username, password, function (err, user) {
+    User.registrationUser(username, password, function (err, user) {
         if (err) {
             if (err instanceof AuthError){
                 return next(new HttpError(403, err.message));
