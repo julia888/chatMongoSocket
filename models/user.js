@@ -60,6 +60,10 @@ schema.statics.authorize = function (username, password, callback) {
                     //... 403 forbidden
                     callback(new AuthError("wrong password"));
                 }
+            } else {
+                callback(function (err) {
+                    callback(err);
+                });
             }
         }
     ], callback);

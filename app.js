@@ -19,7 +19,7 @@ app.set('view engine', 'ejs');
 
 app.set('port', config.get('port'));
 let accessLogStream = fs.createWriteStream(__dirname + '/access.log',{flags: 'a'});
-// app.use(logger('dev'));
+app.use(logger('dev'));
 app.use(logger('combined', {stream: accessLogStream}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

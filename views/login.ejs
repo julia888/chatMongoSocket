@@ -15,13 +15,12 @@
     <ul class="nav navbar-nav">
       <li><a href="/">Главная</a></li>
       <% if(user){ %>
-        <li><a href="/chat">Чат</a></li>
+
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <a href="" onclick="$(document.body).append($('<form method=POST action=/logout>'));$('form').submit();return false">Выйти</a>
+      <li><a href="/chat">Чат</a></li>
     </ul>
       <% } else {%>
-      <!--<li><a href="/chat">Чат</a></li>-->
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li><a href="/registration">Зарегистрироваться</a></li>
@@ -80,6 +79,9 @@
                 },
                 403: function() {
                     $('.error', form).html('Wrong Password');
+                },
+                500: function() {
+                    $('.error', form).html('You are not exists');
                 }
             }
         });
